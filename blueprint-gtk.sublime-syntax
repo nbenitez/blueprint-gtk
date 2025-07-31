@@ -8,10 +8,10 @@ contexts:
   main:
     - include: comment
     - include: using-statement
+    - include: signal
     - include: property-declaration
     - include: property-block
     - include: binding
-    - include: signal
     - include: function
     - include: class-with-id
     - include: menu-with-id
@@ -137,7 +137,7 @@ contexts:
         - include: property-declaration
         - include: literals
   signal:
-    - match: '\b([-\d_a-z]+)\s*(=>)'
+    - match: '\b([-\d_a-z]+(?:::[-\d_a-z]+)?)\s*(=>)'
       scope: meta.signal.blueprint-gtk
       captures:
         1: support.type.property-name.blueprint-gtk
