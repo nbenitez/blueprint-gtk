@@ -1,6 +1,6 @@
 %YAML 1.2
 ---
-# http://www.sublimetext.com/docs/3/syntax.html
+# http://www.sublimetext.com/docs/syntax.html
 name: Blueprint for GTK
 file_extensions: [blp]
 scope: source.blueprint-gtk
@@ -50,13 +50,13 @@ contexts:
     - include: property-block-end
   class-name:
     - match: '\b\.?[A-Z][\.\w]*'
-      scope:  entity.name.class.blueprint-gtk
+      scope:  entity.name.class.blueprint-gtk markup.bold # force bold
   class-with-id:
     - match: '\b(\.?[A-Z][\.\w]*)\s+([-\d_a-z][-\w]*)'
       scope: markup.bold meta.class.identified.blueprint-gtk
       captures:
         1: entity.name.class.blueprint-gtk markup.bold
-        2: entity.other.attribute-name.id.blueprint-gtk
+        2: entity.other.attribute-name.id.blueprint-gtk markup.italic # force italic
   function:
     - match: \b(\w+)\s*(\()
       captures:
@@ -79,7 +79,7 @@ contexts:
     - include: keyword-control
     - include: keyword-operator
   keyword-control:
-    - match: \b(using|template|menu|submenu|section|item|bind)\b
+    - match: \b(using|template|menu|submenu|section|item|bind|as|no-sync-create|inverted|bidirectional|swapped)\b
       scope: keyword.control.blueprint-gtk
   keyword-operator:
     - match: (=>)
@@ -126,7 +126,7 @@ contexts:
     - match: '(\[)\s*([-\w]+)\b'
       captures:
         1: punctuation.section.qualifier.begin.blueprint-gtk
-        2: support.type.property-name.blueprint-gtk 
+        2: variable.parameter.blueprint-gtk
       push:
         - meta_scope: meta.qualifier.blueprint-gtk
         - match: '\]'
