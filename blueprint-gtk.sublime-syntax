@@ -1,0 +1,188 @@
+%YAML 1.2
+---
+# http://www.sublimetext.com/docs/3/syntax.html
+name: Blueprint for GTK
+file_extensions: [blp]
+scope: source.blueprint-gtk
+contexts:
+  main:
+    - include: comment
+    - include: using-statement
+    - include: property-declaration
+    - include: property-block
+    - include: binding
+    - include: signal
+    - include: function
+    - include: class-with-id
+    - include: menu-with-id
+    - include: superclass-name
+    - include: qualifier
+    - include: string
+    - include: numeric-value
+    - include: class-name
+    - include: keyword
+    - include: property-value
+    - include: blocks
+    - include: terminator
+  comment:
+    - include: line-comment
+    - include: block-comment
+  binding:
+    - match: '\b(bind)\s+([-\w]+)\s*(\.)\s*([-\w]+)'
+      scope: meta.binding.blueprint-gtk
+      captures:
+        1: keyword.control.bind.blueprint-gtk
+        2: entity.other.attribute-name.id.blueprint-gtk
+        3: punctuation.accessor.blueprint-gtk
+        4: variable.other.property.blueprint-gtk
+  block-comment:
+    - match: /\*
+      captures:
+        0: punctuation.definition.comment.blueprint-gtk
+      push:
+        - meta_scope: comment.block.blueprint-gtk
+        - match: \*/
+          captures:
+            0: punctuation.definition.comment.blueprint-gtk
+          pop: true
+  blocks:
+    - include: property-block-begin
+    - include: property-block-end
+  class-name:
+    - match: '\b\.?[A-Z][\.\w]*'
+      scope:  entity.name.class.blueprint-gtk
+  class-with-id:
+    - match: '\b(\.?[A-Z][\.\w]*)\s+([-\d_a-z][-\w]*)'
+      scope: markup.bold meta.class.identified.blueprint-gtk
+      captures:
+        1: entity.name.class.blueprint-gtk markup.bold
+        2: entity.other.attribute-name.id.blueprint-gtk
+  function:
+    - match: \b(\w+)\s*(\()
+      captures:
+        1: entity.name.function.blueprint-gtk
+        2: punctuation.section.function.begin.blueprint-gtk
+      push:
+        - meta_scope: meta.function.blueprint-gtk
+        - match: \)
+          captures:
+            0: punctuation.section.function.end.blueprint-gtk
+          pop: true
+        - include: function
+        - include: string
+        - include: numeric-value
+        - match: '\b[-\d_a-z][-\w]*\b'
+          scope: entity.other.attribute-name.id.blueprint-gtk
+        - match: ","
+          scope: punctuation.separator.comma.blueprint-gtk
+  keyword:
+    - include: keyword-control
+    - include: keyword-operator
+  keyword-control:
+    - match: \b(using|template|menu|submenu|section|item|bind)\b
+      scope: keyword.control.blueprint-gtk
+  keyword-operator:
+    - match: (=>)
+      scope: keyword.operator.blueprint-gtk
+  line-comment:
+    - match: //.*$
+      scope: comment.line.double-slash.blueprint-gtk
+  literals:
+    - include: numeric-value
+    - include: string
+    - include: property-value
+  menu-with-id:
+    - match: '\b(menu|submenu|section|item)\s+([-\d_a-z][-\w]*)\s*(\{)'
+      scope: meta.menu.identified.blueprint-gtk
+      captures:
+        1: keyword.control.menu.blueprint-gtk
+        2: entity.other.attribute-name.id.blueprint-gtk
+        3: punctuation.section.property-list.begin.blueprint-gtk
+  numeric-value:
+    - match: '-?\d+(\.\d+)?'
+      scope: constant.numeric.blueprint-gtk
+  property-block:
+    - match: '\b([-\d_a-z]+)\s*(\[|\{)'
+      scope: meta.property-block.blueprint-gtk
+      captures:
+        1: support.type.property-name.blueprint-gtk
+        2: punctuation.section.property-list.begin.blueprint-gtk
+  property-block-begin:
+    - match: '\[|\{'
+      scope: punctuation.section.property-list.begin.blueprint-gtk
+  property-block-end:
+    - match: '\]|\}'
+      scope: punctuation.section.property-list.end.blueprint-gtk
+  property-declaration:
+    - match: '\b([-\d_a-z]+)\s*(:|=)'
+      scope: meta.property-declaration.blueprint-gtk
+      captures:
+        1: support.type.property-name.blueprint-gtk
+        2: punctuation.separator.key-value.blueprint-gtk
+  property-value:
+    - match: '\b[-\d_a-z][-\w]*\b'
+      scope: constant.language.blueprint-gtk
+  qualifier:
+    - match: '(\[)\s*([-\w]+)\b'
+      captures:
+        1: punctuation.section.qualifier.begin.blueprint-gtk
+        2: support.type.property-name.blueprint-gtk 
+      push:
+        - meta_scope: meta.qualifier.blueprint-gtk
+        - match: '\]'
+          captures:
+            0: punctuation.section.qualifier.end.blueprint-gtk
+          pop: true
+        - include: comment
+        - include: property-declaration
+        - include: literals
+  signal:
+    - match: '\b([-\d_a-z]+)\s*(=>)'
+      scope: meta.signal.blueprint-gtk
+      captures:
+        1: support.type.property-name.blueprint-gtk
+        2: keyword.operator.assignment.signal.blueprint-gtk
+  string:
+    - include: string-single
+    - include: string-double
+  string-double:
+    - match: '"'
+      captures:
+        0: punctuation.definition.string.begin.blueprint-gtk
+      push:
+        - meta_scope: string.quoted.double.blueprint-gtk
+        - match: '"'
+          captures:
+            0: punctuation.definition.string.end.blueprint-gtk
+          pop: true
+        - match: \\.
+          scope: constant.character.escape.blueprint-gtk
+  string-single:
+    - match: "'"
+      captures:
+        0: punctuation.definition.string.begin.blueprint-gtk
+      push:
+        - meta_scope: string.quoted.single.blueprint-gtk
+        - match: "'"
+          captures:
+            0: punctuation.definition.string.end.blueprint-gtk
+          pop: true
+        - match: \\.
+          scope: constant.character.escape.blueprint-gtk
+  superclass-name:
+    - match: '(\:)\s*(\.?[A-Z][\.\w]*)'
+      scope: meta.inherited-class.blueprint-gtk
+      captures:
+        1: keyword.control.operator.inherited-class.blueprint-gtk
+        2: entity.other.inherited-class.blueprint-gtk
+  terminator:
+    - match: ;
+      scope: punctuation.terminator.expression.blueprint-gtk
+  using-statement:
+    - match: '\b(using)\s+([\w\.]+)\s+([\d\.]+)(;|$)'
+      scope: meta.import.blueprint-gtk
+      captures:
+        1: keyword.control.import.blueprint-gtk
+        2: entity.name.class.blueprint-gtk
+        3: constant.numeric.blueprint-gtk
+        4: punctuation.terminator.expression.blueprint-gtk
