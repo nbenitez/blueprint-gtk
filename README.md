@@ -1,6 +1,8 @@
 Syntax highlighting for GTK Blueprint files
 ===========================================
 
+This is a Sublime Text plugin to provide syntax highlighting for [Blueprint compiler](https://gitlab.gnome.org/GNOME/blueprint-compiler/) files, which is a [markup language](https://gnome.pages.gitlab.gnome.org/blueprint-compiler/) and compiler for GTK 4 user interfaces.
+
 ## Screenshot
 
 With color scheme Monokai Pro (Filter Spectrum)
